@@ -1,12 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Articles from './Articles';
+import Article from './Article';
+import {ApolloProvider, ApolloClient, HttpLink, InMemoryCache, Reference} from '@apollo/client';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+const client = new ApolloClient({
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          article(
+            existingDataFromCache: Reference | undefined,
+            {args, toReference},
+          ) {
+            return (
+              existingDataFromCache ||
+              (args?.id &&
+                toReference({
+                  __typename: 'Article',
+                  id: args.id,
+                }))
+            );
+          },
+        },
+      },
+    },
+  }),
+  link: new HttpLink({
+    uri: 'https://metaphysics-production.artsy.net/',
+  }),
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <Router>
+        <Switch>
+            <Route path="/:id" children={<Article />} />
+            <Route path="/">
+              <Articles />
+            </Route>
+        </Switch>
+      </Router>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
