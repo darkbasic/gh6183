@@ -10,11 +10,14 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
+    "prestart": "yarn run compile",
+    "start": "node build/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "check": "gts check",
+    "check": "gts check \"src/**/*.ts\"",
     "clean": "gts clean",
+    "precompile": "yarn run clean && yarn run fix",
     "compile": "tsc",
-    "fix": "gts fix",
+    "fix": "gts fix \"src/**/*.ts\"",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
     "posttest": "npm run check"
@@ -22,6 +25,6 @@
   "devDependencies": {
     "gts": "^2.0.0",
     "typescript": "~3.8.0",
-    "@types/node": "^10.0.3"
+    "@types/node": "^12.0.0"
   }
 }
