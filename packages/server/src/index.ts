@@ -1,24 +1,56 @@
-console.log('Try npm run check/fix!');
+import {ApolloServer, gql} from 'apollo-server';
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
+const authors = [
+  {id: 1, name: 'First author'},
+  {id: 2, name: 'Second author'},
+];
 
-const trailing = 'Semicolon';
+const articles = [
+  {
+    id: 1,
+    title: 'First article',
+    author: authors[0],
+  },
+  {
+    id: 2,
+    title: 'Second article',
+    author: authors[1],
+  },
+  {
+    id: 3,
+    title: 'Third article',
+    author: authors[0],
+  },
+];
 
-const why = 'am I tabbed?';
+const server = new ApolloServer({
+  typeDefs: gql`
+    type Author {
+      id: ID!
+      name: String!
+    }
 
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
-) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
-  }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
-}
-// TODO: more examples
+    type Article {
+      id: ID!
+      title: String!
+      author: Author!
+    }
+
+    type Query {
+      articles: [Article!]!
+      article(id: String!): Article!
+    }
+  `,
+  resolvers: {
+    Query: {
+      articles() {
+        return articles;
+      },
+      article(root, {id}) {
+        return articles[id - 1];
+      },
+    },
+  },
+});
+
+server.listen().then(({url}) => console.log(`Server ready at ${url}`));

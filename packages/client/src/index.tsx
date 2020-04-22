@@ -34,7 +34,7 @@ const client = new ApolloClient({
     },
   }),
   link: new HttpLink({
-    uri: 'https://metaphysics-production.artsy.net/',
+    uri: '/graphql',
   }),
 });
 

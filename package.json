@@ -1,21 +1,28 @@
 {
-   "private": true,
-   "name": "apollo-monorepo",
-   "workspaces": {
-      "packages": ["packages/server", "packages/client"],
-      "nohoist": [
-        "**/gts",
-        "**/eslint",
-        "**/@types/testing-library__dom",
-        "**/@types/testing-library__react"
-      ]
-   },
-   "scripts": {
-       "client": "yarn workspace client start",
-       "server": "yarn workspace server start",
-       "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
-   },
-   "dependencies": {
-      "concurrently": "^5.1.0"
-   }
+  "private": true,
+  "name": "apollo-monorepo",
+  "workspaces": {
+    "packages": [
+      "packages/server",
+      "packages/client"
+    ],
+    "nohoist": [
+      "**/gts",
+      "**/eslint",
+      "**/@types/testing-library__dom",
+      "**/@types/testing-library__react"
+    ]
+  },
+  "resolutions": {
+    "graphql-tools": "^5.0.0"
+  },
+  "scripts": {
+    "install:clean": "rm -rf node_modules yarn.lock packages/server/node_modules packages/server/yarn.lock packages/client/node_modules packages/client/yarn.lock && yarn",
+    "client": "yarn workspace client start",
+    "server": "yarn workspace server start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  }
 }
