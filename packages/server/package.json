@@ -10,8 +10,7 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "prestart": "yarn run compile",
-    "start": "node build/src/index.js",
+    "start": "ts-node --files src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "check": "gts check \"src/**/*.ts\"",
     "clean": "gts clean",
@@ -25,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^12.0.0",
     "gts": "^2.0.0",
+    "ts-node": "^8.9.0",
     "typescript": "~3.8.0"
   },
   "dependencies": {

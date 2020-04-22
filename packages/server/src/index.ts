@@ -40,6 +40,10 @@ const server = new ApolloServer({
       articles: [Article!]!
       article(id: String!): Article!
     }
+
+    type Mutation {
+      removeArticle(id: ID!): ID!
+    }
   `,
   resolvers: {
     Query: {
@@ -47,7 +51,18 @@ const server = new ApolloServer({
         return articles;
       },
       article(root, {id}) {
-        return articles[id - 1];
+        return articles.find(article => article.id === id);
+      },
+    },
+    Mutation: {
+      removeArticle(root, {id}) {
+        for (const index of articles.keys()) {
+          if (articles[index].id === parseInt(id)) {
+            articles.splice(index, 1);
+            return id;
+          }
+        }
+        throw new Error('Article not found');
       },
     },
   },
