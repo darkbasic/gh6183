@@ -56,6 +56,9 @@ const server = new ApolloServer({
     },
     Mutation: {
       removeArticle(root, {id}) {
+        if (parseInt(id) === 3) {
+          return new Promise((resolve, reject) => setTimeout(() => reject('Hardcoded error'), 3000));
+        }
         for (const index of articles.keys()) {
           if (articles[index].id === parseInt(id)) {
             articles.splice(index, 1);
