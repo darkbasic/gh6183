@@ -4,16 +4,35 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Articles from './Articles';
 import Article from './Article';
-import {ApolloClient, HttpLink, InMemoryCache} from 'apollo-boost';
+import {ApolloProvider, ApolloClient, HttpLink, InMemoryCache, Reference} from '@apollo/client';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
-import { ApolloProvider } from 'react-apollo';
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          article(
+            existingDataFromCache: Reference | undefined,
+            {args, toReference},
+          ) {
+            return (
+              existingDataFromCache ||
+              (args?.id &&
+                toReference({
+                  __typename: 'Article',
+                  id: args.id,
+                }))
+            );
+          },
+        },
+      },
+    },
+  }),
   link: new HttpLink({
     uri: '/graphql',
   }),

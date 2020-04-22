@@ -1,6 +1,5 @@
 import React from 'react';
-import { gql } from 'apollo-boost';
-import { useQuery, useMutation } from 'react-apollo';
+import { useQuery, gql, useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
 
 const getArticlesQuery = gql`
@@ -22,7 +21,7 @@ function Articles() {
   const {data} = useQuery(getArticlesQuery);
 
   const [removeArticle] = useMutation(removeArticleMutation, {
-    update(cache: any, {data: mutationData}: any) {
+    update(cache, {data: mutationData}) {
       if (mutationData) {
         const data: any = cache.readQuery({query: getArticlesQuery});
         if (data) {

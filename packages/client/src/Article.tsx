@@ -1,6 +1,5 @@
 import React from 'react';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo';
+import { useQuery, gql } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
 function Article() {
